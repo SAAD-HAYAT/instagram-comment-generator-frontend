@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "antd": "^5.23.4",
     "axios": "^1.7.9",
     "next": "15.1.6",

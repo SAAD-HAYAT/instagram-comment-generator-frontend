@@ -17,11 +17,11 @@ export default {
       },
       colors: {
         instagram: {
-          yellow: "#feda7540",
-          orange: "#fa7e1e40",
-          pink: "#d6297640",
+          yellow: "#feda7570",
+          orange: "#fa7e1e50",
+          pink: "#d6297665",
           purple: "#962fbf40",
-          blue: "#4f5bd540",
+          blue: "#4f5bd565",
         },
         background: "var(--background)",
         foreground: "var(--foreground)",
