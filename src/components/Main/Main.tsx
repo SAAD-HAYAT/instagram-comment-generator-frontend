@@ -56,7 +56,7 @@ const  Main = () => {
                 <div className="mt-10 border-[3px] bg-[#f2f6ff] border-dashed w-[100%] h-[40vh] rounded-xl border-[#525789]">
                     <div className="flex justify-center items-center w-[100%] h-[100%]  overflow-y-scroll">
                         {/* <div> */}
-                    {comments.length === 0 ? <h2 className="p-2 sm:text-3xl text-x text-[#525789]">Enter the link of the post</h2> :<p className="p-2 text-xl sm:text-xl text-[#525789] h-[100%]">{<ul>{comments.map((comment:string,index) =><li key={index}> {index>0? index +"."+ comment : comment}</li>)}</ul>}</p>}
+                    {comments.length === 0 ? <h2 className="p-2 sm:text-3xl text-x text-[#525789]">Enter the link of the post</h2> :<ul className="p-2 text-xl sm:text-xl text-[#525789] h-[100%]">{comments.map((comment:string,index) =><li key={index}> {index>0? index +"."+ comment : comment}</li>)}</ul>}
                     {/* </div> */}
                     </div>
                 </div>
