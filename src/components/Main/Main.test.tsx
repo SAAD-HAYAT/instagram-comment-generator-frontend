@@ -76,9 +76,9 @@ describe("screenshot input", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("PNG, JPEG, or WebP");
 
     const huge = screenshot("large.png");
-    Object.defineProperty(huge, "size", { value: 8 * 1024 * 1024 + 1 });
+    Object.defineProperty(huge, "size", { value: 4 * 1024 * 1024 + 1 });
     selectFile(huge);
-    expect(screen.getByRole("alert")).toHaveTextContent("over 8 MiB");
+    expect(screen.getByRole("alert")).toHaveTextContent("over 4 MiB");
     expect(screen.getByRole("button", { name: "Generate 3 witty comments" })).toBeDisabled();
   });
 });
@@ -94,7 +94,7 @@ describe("generation", () => {
 
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
     const [url, options] = vi.mocked(fetch).mock.calls[0];
-    expect(url).toBe("http://localhost:8000/api/generate-comments/image");
+    expect(url).toBe("/api/generate-comments/image");
     expect(options?.method).toBe("POST");
     const form = options?.body as FormData;
     expect(form.get("caption")).toBe("The full ending that the screenshot cuts off.");

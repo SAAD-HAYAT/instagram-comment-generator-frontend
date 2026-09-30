@@ -3,9 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChangeEvent, DragEvent, FormEvent } from "react";
 
-const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set(["image/png", "image/jpeg", "image/webp"]);
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
 
 type Suggestion = { text: string; reason: string };
 type GenerationResponse = { suggestions: Suggestion[]; comments: string };
@@ -43,7 +42,7 @@ export default function Main() {
       return;
     }
     if (file.size > MAX_IMAGE_BYTES) {
-      setError("The screenshot is over 8 MiB. Choose a smaller image.");
+      setError("The screenshot is over 4 MiB. Choose a smaller image.");
       return;
     }
     if (file.size === 0) {
@@ -107,7 +106,7 @@ export default function Main() {
     form.append("caption", caption.trim());
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/generate-comments/image`, {
+      const response = await fetch("/api/generate-comments/image", {
         method: "POST",
         body: form,
       });
@@ -221,7 +220,7 @@ export default function Main() {
                 </div>
               )}
             </div>
-            <p className="mt-3 text-xs text-[#59617d]">PNG, JPEG, or WebP · up to 8 MiB · one image at a time</p>
+            <p className="mt-3 text-xs text-[#59617d]">PNG, JPEG, or WebP · up to 4 MiB · one image at a time</p>
 
             <div className="mt-8">
               <label htmlFor="caption" className="text-base font-bold">Full caption <span className="font-normal text-[#59617d]">(optional)</span></label>
