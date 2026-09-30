@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Instagram Comment Generator
 
-## Getting Started
+The Next.js app turns an Instagram post screenshot into three witty comments. Users can select, drop, or paste a PNG, JPEG, or WebP image, optionally add the full caption, and copy an individual suggestion. It does not log in to or post to Instagram.
 
-First, run the development server:
+## Local setup
 
-```bash
+```powershell
+npm ci
+Copy-Item .env.example .env.local
+# Edit .env.local and set OPENROUTER_API_KEY.
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Only the Next.js process is needed. The form sends a same-origin request to `POST /api/generate-comments/image`. The route runs in the Node.js runtime, validates the image in memory, and sends it to OpenRouter as a base64 data URL. It never saves the screenshot. `OPENROUTER_API_KEY` stays on the server; `OPENAI_API_KEY` remains accepted as a legacy alias. The default model is `openrouter/free`; `OPENROUTER_MODEL` can select a specific vision-capable model. `OPENROUTER_SITE_URL` is optional attribution metadata.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The screenshot limit is 4 MiB and 25 megapixels. This leaves multipart overhead below [Vercel Functions' 4.5 MB request-body limit](https://vercel.com/docs/functions/limitations). The provider request has a 20-second timeout per attempt and can retry once; external provider availability is not guaranteed. Set the server-side environment variables in your Next.js deployment and deploy as a server-rendered application with Node.js functions, not as a static export. No persistent filesystem is required.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`POST /api/generate-comments` remains for caption-only JSON clients: send `{ "caption": "Full post caption" }`. The old URL-only Instaloader extraction is not part of this app because screenshot generation does not depend on access to Instagram posts. Both generation endpoints return `suggestions` and the legacy `comments` string.
 
-## Learn More
+`GET /health` checks that the Next.js app is serving requests. It does not test OpenRouter availability.
 
-To learn more about Next.js, take a look at the following resources:
+## Checks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run build`.
